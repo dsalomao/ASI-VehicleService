@@ -35,11 +35,14 @@ public class VeiculosmserviceController {
 
 		// utilizando a bean de instanciação de um rabbitAdmin para declarar nossos recursos do Rabbit (Fila, Corretor & Ligação)
 		RabbitTemplate t = (RabbitTemplate) context.getBean("rTemplate");
+        // instanciando conversor json do nosso arquivo de configs
         ObjectMapper m = (ObjectMapper) context.getBean("mConverter");
 
         try {
+            // convertendo POJO
             String json = m.writeValueAsString(payload);
 
+            // criando e enviando mensagem
             t.convertAndSend(exchange, "", json);
     
             return "Muito bem. Veículo salvo com sucesso!";
@@ -48,6 +51,7 @@ public class VeiculosmserviceController {
         }
     }
 
+    // Método observador da fila de veículos
     @RabbitListener(queues="VEHICLES-QUEUE")
     public Void get(Message m)
     {

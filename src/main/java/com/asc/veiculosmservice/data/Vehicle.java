@@ -1,13 +1,9 @@
 package com.asc.veiculosmservice.data;
 
-// import com.fasterxml.jackson.annotation.JsonProperty;
-
+// Classe de dados para melhor visualização da troca de mensagens reais
 public class Vehicle {
-    // @JsonProperty("id")
     private Integer id;
-    // @JsonProperty("plate")
     private String plate;
-    // @JsonProperty("year")
     private String year;
 
     public Vehicle() 

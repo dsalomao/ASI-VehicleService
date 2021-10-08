@@ -66,6 +66,7 @@ public class RabbitConfiguration {
             .noargs();
     }    
 
+    // Bean de exposição de ceonversão de classes POJO para JSON string
     @Bean(name="mConverter")
     public ObjectMapper messageConverter()
     {
