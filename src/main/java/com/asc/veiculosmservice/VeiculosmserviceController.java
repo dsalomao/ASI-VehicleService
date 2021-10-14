@@ -45,7 +45,7 @@ public class VeiculosmserviceController {
             // criando e enviando mensagem
             t.convertAndSend(exchange, "", json);
     
-            return "Muito bem. Veículo salvo com sucesso!";
+            return "Muito bem. Veículo salvo com sucesso! Uma mensagem com os dados do veículo foi enviada aos outros micro serviços!";
         } catch (Exception e) {
             return "Opa! Houve algo de errado na transcrição de seu veículo.";
         }

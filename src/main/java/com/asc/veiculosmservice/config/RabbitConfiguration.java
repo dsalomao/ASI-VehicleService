@@ -38,12 +38,43 @@ public class RabbitConfiguration {
         return new RabbitTemplate(connectionFactory());
     }
 
+    /**
+     * Secção de construção das filas de mensagens
+     * @return
+     */
+
     // Bean de instanciação de uma classe de fila
-    @Bean(name="buildQueue")
-    public Queue buildQueue() 
+    @Bean(name="buildVeiQueue")
+    public Queue buildVeiQueue() 
     {
         return new Queue("VEHICLES-QUEUE", true);
     }
+
+    // Bean de instanciação de uma classe de fila
+    @Bean(name="buildRQueue")
+    public Queue buildRQueue() 
+    {
+        return new Queue("REPAROS-QUEUE", true);
+    }
+
+    // Bean de instanciação de uma classe de fila
+    @Bean(name="buildCQueue")
+    public Queue buildCQueue() 
+    {
+        return new Queue("COMPRAS-QUEUE", true);
+    }
+
+    // Bean de instanciação de uma classe de fila
+    @Bean(name="buildVQueue")
+    public Queue buildVQueue() 
+    {
+        return new Queue("VENDAS-QUEUE", true);
+    }
+
+    /**
+     * Criando os corretores de mensagens
+     * @return
+     */
 
     /// Bean de instanciação de uma classe de corretor de mensagens do tipo FANOUT
     @Bean(name="buildFExchange")
@@ -54,17 +85,87 @@ public class RabbitConfiguration {
         .durable(true)
         .build();
     }
+    
+    // Bean de instanciação de uma classe de corretor de mensagens do tipo FANOUT
+    @Bean(name="buildDExchange")
+    public Exchange directExchange()
+    {
+        return ExchangeBuilder
+        .directExchange("CHANGE-VEHICLE-DEXCHANGE")
+        .durable(true)
+        .build();
+    }
 
+    /**
+     * Construindo as ligações entre as filas e corretores
+     * @return
+     */ 
+    
     // Bean de instanciação de uma classe de ligação entre o corretor e a fila
-    @Bean(name="buildFBinding")
-    public Binding fanoutBinding()
+    @Bean(name="buildFRBinding")
+    public Binding fanoutRBinding()
     {
         return BindingBuilder
-            .bind(buildQueue())
+            .bind(buildRQueue())
             .to(fanoutExchange())
             .with("")
             .noargs();
-    }    
+    } 
+
+    // Bean de instanciação de uma classe de ligação entre o corretor e a fila
+    @Bean(name="buildFCBinding")
+    public Binding fanoutCBinding()
+    {
+        return BindingBuilder
+            .bind(buildCQueue())
+            .to(fanoutExchange())
+            .with("")
+            .noargs();
+    } 
+
+    // Bean de instanciação de uma classe de ligação entre o corretor e a fila
+    @Bean(name="buildFVBinding")
+    public Binding fanoutVBinding()
+    {
+        return BindingBuilder
+            .bind(buildVQueue())
+            .to(fanoutExchange())
+            .with("")
+            .noargs();
+    } 
+
+    // Bean de instanciação de uma classe de ligação entre o corretor e a fila
+    @Bean(name="buildDRBinding")
+    public Binding directRBinding()
+    {
+        return BindingBuilder
+            .bind(buildVeiQueue())
+            .to(directExchange())
+            .with("CHANGE-VEHICLE-BINDING")
+            .noargs();
+    }   
+    
+    // Bean de instanciação de uma classe de ligação entre o corretor e a fila
+    @Bean(name="buildDCBinding")
+    public Binding directCBinding()
+    {
+        return BindingBuilder
+            .bind(buildVeiQueue())
+            .to(directExchange())
+            .with("CHANGE-VEHICLE-BINDING")
+            .noargs();
+    } 
+
+    // Bean de instanciação de uma classe de ligação entre o corretor e a fila
+    @Bean(name="buildDVBinding")
+    public Binding directVBinding()
+    {
+        return BindingBuilder
+            .bind(buildVeiQueue())
+            .to(directExchange())
+            .with("CHANGE-VEHICLE-BINDING")
+            .noargs();
+    } 
 
     // Bean de exposição de ceonversão de classes POJO para JSON string
     @Bean(name="mConverter")

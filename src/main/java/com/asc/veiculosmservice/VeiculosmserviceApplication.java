@@ -26,14 +26,38 @@ public class VeiculosmserviceApplication {
 		RabbitAdmin admin = (RabbitAdmin) context.getBean("rAdmin");
 		
 		// criação dos recursos
-		Queue q = (Queue) context.getBean("buildQueue");
-		Exchange e = (Exchange) context.getBean("buildFExchange");
-		Binding b = (Binding) context.getBean("buildFBinding");
+		Queue veiq = (Queue) context.getBean("buildVeiQueue");
+		Queue rq = (Queue) context.getBean("buildRQueue");
+		Queue cq = (Queue) context.getBean("buildCQueue");
+		Queue vq = (Queue) context.getBean("buildVQueue");
+
+		Exchange fe = (Exchange) context.getBean("buildFExchange");
+		Exchange de = (Exchange) context.getBean("buildDExchange");
+
+		Binding rb = (Binding) context.getBean("buildFRBinding");
+		Binding cb = (Binding) context.getBean("buildFCBinding");
+		Binding vb = (Binding) context.getBean("buildFVBinding");
+		
+		Binding db = (Binding) context.getBean("buildDRBinding");
+		Binding drb = (Binding) context.getBean("buildDCBinding");
+		Binding dcb = (Binding) context.getBean("buildDVBinding");
 
 		// declaração dos recursos no servidor do Rabbit
-		admin.declareQueue(q);
-		admin.declareExchange(e);
-		admin.declareBinding(b);
+		admin.declareQueue(veiq);
+		admin.declareQueue(rq);
+		admin.declareQueue(cq);
+		admin.declareQueue(vq);
+
+		admin.declareExchange(fe);
+		admin.declareExchange(de);
+
+		admin.declareBinding(rb);
+		admin.declareBinding(cb);
+		admin.declareBinding(vb);
+
+		admin.declareBinding(db);
+		admin.declareBinding(drb);
+		admin.declareBinding(dcb);
 		
 		SpringApplication.run(VeiculosmserviceApplication.class, args);
 	}
